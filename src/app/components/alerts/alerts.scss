@@ -1,0 +1,71 @@
+.alerts-box {
+  background: #020617;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  width: 100%;
+}
+
+.alerts-box h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.alerts-box p {
+  margin: 4px 0;
+}
+
+.danger {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.warning {
+  color: #eab308;
+  font-weight: bold;
+}
+
+.normal {
+  color: #22c55e;
+}
+
+.history{
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.history ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.history li {
+  margin-bottom: 4px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.prediction {
+    color: #38bdf8;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.anomaly {
+    color: #ef4444;
+    font-weight: 600;
+    margin-top: 6px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.6; }
+}
+
+.risk {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -1,0 +1,19 @@
+<div class="controls">
+    <label>
+        <input type="checkbox" checked (change)="toggleDataset(0, $event)">
+        <span style="color:#22c55e">●</span> Voltage
+    </label>
+    <label>
+        <input type="checkbox" checked (change)="toggleDataset(1, $event)">
+        <span style="color:#3b82f6">●</span> Current
+    </label>
+    <label>
+        <input type="checkbox" checked (change)="toggleDataset(2, $event)">
+        <span style="color:#f59e0b">●</span> Power
+    </label>
+</div>
+
+<canvas #chartCanvas></canvas>
+<div class="graph-container">
+    <canvas #chartCanvas></canvas>
+</div>

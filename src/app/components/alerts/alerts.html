@@ -1,0 +1,22 @@
+<div class="alerts-box">
+  <h2>🚨 Alerts</h2>
+  <p [ngClass]="getClass()">{{ alertMessage }}</p>
+
+  <p class="prediction">{{ prediction }}</p>
+
+  <p class="anomaly" *ngIf="anomaly === 'Anomaly 🚨'">Anomaly Detected</p>
+
+  <p class="risk" [ngClass]="riskClass()">
+    Risk Level: {{ risk }}
+  </p>
+  
+  <!-- Alert History -->
+  <div class="history">
+    <h3>Alert History</h3>
+    <ul>
+      <li *ngFor="let alert of alerts; trackBy: trackByIndex">
+        {{ alert }}
+      </li>
+    </ul>
+  </div>
+</div>

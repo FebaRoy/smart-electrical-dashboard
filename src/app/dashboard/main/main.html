@@ -1,0 +1,29 @@
+<div class="dashboard-container" *ngIf="data$ | async as data">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>⚡ IntelliGrid Monitoring System</h1>
+    <span class="status" [ngClass]="getStatusClass(data?.status)">
+      System Status: {{ data?.status | uppercase }}
+    </span>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-section">
+    <app-kpi-card title="Voltage" [value]="data?.voltage + 'V'"></app-kpi-card>
+    <app-kpi-card title="Current" [value]="data?.current + 'A'"></app-kpi-card>
+    <app-kpi-card title="Power" [value]="data?.power + 'W'"></app-kpi-card>
+  </div>
+
+  <!-- Graph Section -->
+  <div class="graph-section">
+    <app-graph></app-graph>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="bottom-section">
+    <app-alerts></app-alerts>
+    <app-device-status></app-device-status>
+  </div>
+
+</div>
