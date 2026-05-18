@@ -1,0 +1,33 @@
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.device-card {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 20px;
+  transition: 0.3s ease;
+}
+
+.device-card:hover {
+  transform: translateY(-3px);
+}
+
+.device-card h3 {
+  margin-bottom: 3px;
+}
+
+.online {
+  border-left: 4px solid #22c55e;
+}
+
+.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.offline {
+  border-left: 4px solid #ef4444;
+}

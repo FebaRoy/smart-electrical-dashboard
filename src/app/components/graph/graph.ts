@@ -93,7 +93,15 @@ export class Graph implements OnInit, AfterViewInit, OnDestroy {
         },
         plugins: {
           legend: {
-            labels: { color: '#ffffff' },
+            position: 'top',
+            align: 'center',
+            labels: {
+              color: '#ffffff',
+              padding: 25,
+              boxWidth: 40,
+              boxHeight: 2,
+              font: { size: 13 },
+            },
           },
         },
         scales: {
@@ -109,7 +117,7 @@ export class Graph implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateChart(dataPoint: any, isLive: boolean) {
-    if (!this.chart) return;
+    if (!this.chart || !dataPoint) return;
 
     const time = new Date().toLocaleTimeString();
 
@@ -120,9 +128,9 @@ export class Graph implements OnInit, AfterViewInit, OnDestroy {
     const powerData = this.chart.data.datasets[2].data as number[];
 
     labels.push(time);
-    voltageData.push(dataPoint.voltage);
-    currentData.push(dataPoint.current);
-    powerData.push(dataPoint.power);
+    voltageData.push(Number(dataPoint.voltage));
+    currentData.push(Number(dataPoint.current));
+    powerData.push(Number(dataPoint.power));
 
     if (labels.length > 20) {
       labels.shift();
@@ -131,7 +139,7 @@ export class Graph implements OnInit, AfterViewInit, OnDestroy {
       powerData.shift();
     }
 
-    this.chart.update(isLive ? 'none' : undefined);
+    this.chart.update('none');
   }
 
   ngOnDestroy() {

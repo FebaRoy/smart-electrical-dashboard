@@ -1,6 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+
 import random
+import asyncio
 
 from database import engine, SessionLocal
 from models import Base, Reading
@@ -22,39 +24,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/data")
-def get_data():
+#Generate Data Function
+def generate_data():
     voltage = round(random.uniform(210, 240), 1)
     current = round(random.uniform(4, 6), 2)
     power = round(voltage * current)
-
+    
     ai_result = ai.analyze(voltage)
     
     prediction = ai_result["prediction"]
-    anomaly = ai_result["anomaly"]
+    anomaly = ai_result["anomaly"]  
     risk = ai_result["risk"]
-
-    # Status logic
+    
+    #Status Logic
     if voltage > 238:
         status = "CRITICAL"
     elif voltage > 235:
-        status = "WARNING"
+        status = "WARNING"  
     else:
         status = "NORMAL"
-
-    # Alert
+    
+    #Alerts
     if voltage > 235:
         alert = "High Voltage ⚠️"
     elif voltage < 210:
         alert = "Low Voltage ⚠️"
     else:
         alert = "System Normal ✅"
-
-    # ✅ SAVE TO DB (CORRECT PLACE)
+    
+    #Save to DB
     db = SessionLocal()
-
+    
     reading = Reading(
-        voltage=voltage,
+        voltage=voltage,    
         current=current,
         power=power,
         status=status,
@@ -62,11 +64,11 @@ def get_data():
         prediction=prediction,
         anomaly=anomaly
     )
-
+    
     db.add(reading)
     db.commit()
     db.close()
-
+    
     return {
         "voltage": voltage,
         "current": current,
@@ -78,10 +80,24 @@ def get_data():
         "risk": risk
     }
 
+#Websocket Endpoint
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = generate_data()
+        await websocket.send_json(data)
+        await asyncio.sleep(1)      
+
+#History API
 @app.get("/history")
 def get_history():
     db = SessionLocal()
-    data = db.query(Reading).order_by(Reading.id.desc()).limit(20).all()
+    
+    data = db.query(Reading)\
+        .order_by(Reading.id.desc())\
+            .limit(20)\
+                .all()
     db.close()
 
     return data[::-1]
