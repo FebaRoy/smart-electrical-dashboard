@@ -1,12 +1,16 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 import random
 import asyncio
+import csv
 
 from database import engine, SessionLocal
 from models import Base, Reading
 from ai_engine import AIEngine
+
+from datetime import datetime
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -35,6 +39,24 @@ def generate_data():
     prediction = ai_result["prediction"]
     anomaly = ai_result["anomaly"]  
     risk = ai_result["risk"]
+    
+    devices = [
+        {
+            "name": "Main Transformer",
+            "status": "Online",
+            "health": "good"
+        },
+        {
+            "name": "Backup Generator",
+            "status": "High Temperature" if voltage > 235 else "Stable",
+            "health": "warning" if voltage > 235 else "good"
+        },
+        {
+            "name": "Battery Bank",
+            "status": "Offline" if voltage < 215 else "Online",
+            "health": "danger" if voltage < 215 else "good"
+        }
+    ]
     
     #Status Logic
     if voltage > 238:
@@ -77,7 +99,8 @@ def generate_data():
         "alert": alert,
         "prediction": prediction,
         "anomaly": anomaly,
-        "risk": risk
+        "risk": risk,
+        "devices": devices
     }
 
 #Websocket Endpoint
@@ -101,3 +124,28 @@ def get_history():
     db.close()
 
     return data[::-1]
+
+@app.get("/export")
+def export_data():
+    db = SessionLocal()
+    data = db.query(Reading).all()
+    
+    filename = f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+
+    with open(filename, mode = "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Voltage", "Current", "Power", "Status", "Alert", "Prediction", "Anomaly"])
+        for row in data:
+            writer.writerow([
+                row.voltage,
+                row.current,
+                row.power,
+                row.status,
+                row.alert,
+                row.prediction,
+                row.anomaly
+            ])
+            
+    db.close()
+
+    return FileResponse(path=filename, filename=filename, media_type="text/csv")

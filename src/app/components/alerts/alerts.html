@@ -6,10 +6,8 @@
 
   <p class="anomaly" *ngIf="anomaly === 'Anomaly 🚨'">Anomaly Detected</p>
 
-  <p class="risk" [ngClass]="riskClass()">
-    Risk Level: {{ risk }}
-  </p>
-  
+  <p class="risk" [ngClass]="riskClass()">Risk Level: {{ risk }}</p>
+
   <!-- Alert History -->
   <div class="history">
     <h3>Alert History</h3>

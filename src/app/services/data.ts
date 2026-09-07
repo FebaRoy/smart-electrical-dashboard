@@ -18,6 +18,9 @@ export class Data {
 
   connectWebSocket() {
     this.socket = new WebSocket('ws://127.0.0.1:8000/ws');
+    this.socket.onopen = () => {
+      console.log('WebSocket Connected');
+    };
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       this.dataSubject.next(data);
@@ -26,11 +29,18 @@ export class Data {
       console.error('WebSocket error:', error);
     };
     this.socket.onclose = () => {
-      console.log('WebSocket Disconnected');
+      console.log('Reconnection WebSocket...');
+      setTimeout(() => {
+        this.connectWebSocket();
+      }, 3000);
     };
   }
 
   getHistory() {
     return this.http.get<any[]>('http://127.0.0.1:8000/history');
+  }
+
+  downloadReport() {
+    return this.http.get('http://127.0.0.1:8000/export', { responseType: 'blob' });
   }
 }

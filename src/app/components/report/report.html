@@ -1,0 +1,9 @@
+<div class="report-box">
+  <div class="report-content">
+    <h2>📊 System Reports</h2>
+    <p>Download monitoring history and analytics reports.</p>
+    <button (click)="downloadCSV()">
+      {{ loading ? 'Generating...' : '📥 Download CSV Report' }}
+    </button>
+  </div>
+</div>

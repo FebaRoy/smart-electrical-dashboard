@@ -50,13 +50,13 @@ export class Alerts {
 
   riskClass() {
     if (this.risk === 'High') {
-      return 'danger';
+      return 'high';
     }
 
     if (this.risk === 'Medium') {
-      return 'warning';
+      return 'medium';
     }
 
-    return 'normal';
+    return 'lows';
   }
 }

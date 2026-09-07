@@ -5,14 +5,14 @@ import { Alerts } from '../../components/alerts/alerts';
 import { DeviceStatus } from '../../components/device-status/device-status';
 import { Data } from '../../services/data';
 import { CommonModule } from '@angular/common';
+import { Report } from '../../components/report/report';
 
 @Component({
   selector: 'app-main',
-  imports: [KpiCard, Graph, Alerts, DeviceStatus, CommonModule],
+  imports: [KpiCard, Graph, Alerts, DeviceStatus, CommonModule, Report],
   templateUrl: './main.html',
   styleUrls: ['./main.scss'],
 })
-
 export class Main {
   data$;
 
@@ -22,10 +22,10 @@ export class Main {
 
   getStatusClass(status: string) {
     if (!status) return '';
-    
+
     if (status.toLowerCase().includes('normal')) return 'status-green';
     if (status.toLowerCase().includes('warning')) return 'status-yellow';
-   
-     return 'status-red';
-}
+
+    return 'status-red';
+  }
 }
