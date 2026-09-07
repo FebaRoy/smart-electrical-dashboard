@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Data } from '../../services/data';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-report',
@@ -8,19 +9,21 @@ import { Data } from '../../services/data';
   styleUrl: './report.scss',
 })
 export class Report {
-  loading = false;
-
   constructor(private dataService: Data) {}
-  downloadCSV() {
-    this.loading = true;
-    this.dataService.downloadReport().subscribe((blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'system_report.csv';
-      a.click();
-      window.URL.revokeObjectURL(url);
-      this.loading = false;
+
+  exportReport() {
+    this.dataService.downloadReport().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'intelligrid_report.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Export failed: ', error);
+      },
     });
   }
 }

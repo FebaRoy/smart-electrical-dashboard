@@ -1,9 +1,9 @@
-<div class="report-box">
+<div class="report-card">
   <div class="report-content">
-    <h2>📊 System Reports</h2>
-    <p>Download monitoring history and analytics reports.</p>
-    <button (click)="downloadCSV()">
-      {{ loading ? 'Generating...' : '📥 Download CSV Report' }}
-    </button>
+    <div>
+      <h3>📊 Reports</h3>
+      <p>Download your electrical monitoring data.</p>
+    </div>
+    <button (click)="exportReport()">📥 Export CSV</button>
   </div>
 </div>
